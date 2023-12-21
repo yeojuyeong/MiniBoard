@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.board.mapper.BoardMapper">
+
+<!-- 미니 게시판 등록 -->
+<insert id="write" parameterType="com.board.entity.Board">
+	insert into tbl_board (userid, writer, title, content) values (#{userid}, #{writer}, #{title}, #{content})
+</insert>
+
+<!-- 미니 게시판 목록 -->
+<select id="list" parameterType="java.util.HashMap" resultType="com.board.entity.Board">
+	select @rownum:=@rownum+1 as seq, seqno, writer, title, to_char(regdate,'YYYY-MM-DD') as regdate, hitno from (select @rownum:=0) a, tbl_board b 
+		
+		<if test='searchType.equals("title")'>
+			where title like concat('%', #{keyword}, '%')
+		</if>
+		
+		<if test='searchType.equals("content")'>
+			where content like concat('%', #{keyword}, '%')
+		</if>
+		
+		<if test='searchType.equals("title_content")'>
+			where title like concat('%', #{keyword}, '%') or
+				content like concat('%', #{keyword}, '%')
+		</if>
+		
+		<if test='searchType.equals("writer")'>
+			where writer like concat('%', #{keyword}, '%')
+		</if>
+   
+   	order BY seqno desc limit #{displayPost}, #{postNum}
+	
+	
+</select>
+
+<!-- 게시물 총 갯수 -->
+<select id="count" parameterType="java.util.HashMap" resultType="int">
+ 		select count(seqno) from tbl_board
+  
+ 		<if test='searchType.equals("title")'>
+			where title like concat('%', #{keyword}, '%')
+		</if>
+		
+		<if test='searchType.equals("content")'>
+			where content like concat('%', #{keyword}, '%')
+		</if>
+		
+		<if test='searchType.equals("title_content")'>
+			where title like concat('%', #{keyword}, '%') or
+				content like concat('%', #{keyword}, '%')
+		</if>
+		
+		<if test='searchType.equals("writer")'>
+			where writer like concat('%', #{keyword}, '%')
+		</if>
+ 
+</select>
+
+<!-- 게시물 이전 페이지 -->
+<select id="viewPrev" parameterType="java.util.HashMap" resultType="int">
+   <![CDATA[
+   	select ifnull(max(seqno),0) from tbl_board where seqno < #{seqno}  
+	]]>	
+	
+		<if test='searchType.equals("title")'>	
+			and title like concat('%', #{keyword}, '%')
+		</if>
+		
+		<if test='searchType.equals("content")'>
+			and content like concat('%', #{keyword}, '%')
+		</if>
+		
+		<if test='searchType.equals("title_content")'>
+			and (title like concat('%', #{keyword}, '%') or
+				content like concat('%', #{keyword}, '%')  
+		</if>
+		
+		<if test='searchType.equals("writer")'>
+			and writer like concat('%', #{keyword}, '%')
+		</if> 	
+   
+</select>
+
+<!-- 게시물 다음 페이지 -->
+<select id="viewNext" parameterType="java.util.HashMap" resultType="int">
+   <![CDATA[
+   	select ifnull(min(seqno),0) from tbl_board where seqno > #{seqno} 
+   	
+   ]]>	
+   		<if test='searchType.equals("title")'>
+			and title like concat('%', #{keyword}, '%')
+		</if>
+		
+		<if test='searchType.equals("content")'>
+			and content like concat('%', #{keyword}, '%')
+		</if>
+		
+		<if test='searchType.equals("title_content")'>
+			and (title like concat('%', #{keyword}, '%') or
+				content like concat('%', #{keyword}, '%') 
+		</if>
+		
+		<if test='searchType.equals("writer")'>
+			and writer like concat('%', #{keyword}, '%')
+		</if>   	
+
+</select>
+
+<!-- 게시물 조회수 증가 -->
+<update id="modifyViewcnt" parameterType="com.board.entity.Board">
+	update tbl_board set hitno = (select ifnull(hitno,0) from tbl_board where seqno = #{seqno}) + 1 
+		where seqno = #{seqno}
+</update>
+
+<!-- 미니 게시판 목록 보기-->
+<select id="view" parameterType="int" resultType="com.board.entity.Board">
+	SELECT seqno, userid, writer, title, to_char(regdate,'YYYY-MM-DD') as regdate, content, hitno FROM tbl_board WHERE seqno = #{seqno}
+</select>
+
+<!-- 미니 게시판 수정 -->
+<update id="modify" parameterType="com.board.entity.Board">
+	update tbl_board set writer = #{writer}, title = #{title}, content = #{content} where seqno = #{seqno}
+</update>
+
+<!-- 미니 게시판 삭제 -->
+<delete id="delete" parameterType="int">
+	delete from tbl_board where seqno = #{seqno}
+</delete>
+
+</mapper>

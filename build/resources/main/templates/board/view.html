@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<title>게시물 내용 보기</title>
+</head>
+
+<style>
+body { font-family: "나눔고딕", "맑은고딕" }
+h1 { font-family: "HY견고딕" }
+a:link { color: black; }
+a:visited { color: black; }
+a:hover { color: red; }
+a:active { color: red; }
+#hypertext { text-decoration-line: none; cursor: hand; }
+#topBanner {
+       margin-top:10px;
+       margin-bottom:10px;
+       max-width: 500px;
+       height: auto;
+       display: block; margin: 0 auto;
+}
+
+.boardView {
+  text-align:left;
+  width:900px;
+  height:auto;
+  padding: 20px, 20px;
+  background-color:#FFFFFF;
+  border:4px solid gray;
+  border-radius: 20px;
+}
+.reply {
+  margin-top: 30px;
+  margin-left: 200px;
+  margin-right: 200px;
+  background-color:#FFFFFF;
+  border:4px solid white;
+  border-radius: 20px;
+}
+.writer, .title, .regdate, .content {
+  width: 90%;
+  height:25px;
+  outline:none;
+  color: #636e72;
+  font-size:16px;
+  background: none;
+  border-bottom: 2px solid #adadad;
+  margin: 30px;
+  padding: 10px 10px;
+}
+
+.textArea {
+  width: 90%;
+  height: 350px;
+  overflow: auto;
+  margin: 22px;
+  padding: 10px;
+  box-sizing: border-box;
+  border: solid #adadad;
+  text-align: left;
+  font-size: 16px;
+  resize: both;
+}
+
+.btn_modify  {
+  position:relative;
+  left:20%;
+  transform: translateX(-50%);
+  margin-top: 20px;
+  margin-bottom: 10px;
+  width:40%;
+  height:40px;
+  background: red;
+  background-position: left;
+  background-size: 200%;
+  color:white;
+  font-weight: bold;
+  border:none;
+  cursor:pointer;
+  transition: 0.4s;
+  display:inline;
+}
+
+.btn_delete  {
+  position:relative;
+  left:20%;
+  transform: translateX(-50%);
+  margin-top: 20px;
+  margin-bottom: 10px;
+  width:40%;
+  height:40px;
+  background: pink;
+  background-position: left;
+  background-size: 200%;
+  color:white;
+  font-weight: bold;
+  border:none;
+  cursor:pointer;
+  transition: 0.4s;
+  display:inline;
+}
+.bottom_menu { margin-top: 20px; }
+
+.bottom_menu > a:link, .bottom_menu > a:visited {
+			background-color: #FFA500;
+			color: maroon;
+			padding: 15px 25px;
+			text-align: center;	
+			display: inline-block;
+			text-decoration : none; 
+}
+.bottom_menu > a:hover, .bottom_menu > a:active { 
+	background-color: #1E90FF;
+	text-decoration : none; 
+}
+
+</style>
+<script>
+
+function deleteBoard(){
+	
+	if(confirm("정말로 삭제하시겠습니까?") == true)
+			location.href="/board/delete?seqno=[[${list.seqno}]]";
+}
+</script>
+
+<body onload="startupPage()">
+
+<div>
+	<img id="topBanner" src ="/images/logo.jpg" title="서울기술교육센터" >
+</div>
+
+<div class="main" align="center">
+
+	<div class="boardView">
+		<h1 style="text-align:center;">게시물 내용 보기</h1><br>
+		<div class="writer">이름 : <span th:text="${list.writer}"></span></div>
+		<div class="title">제목 : <span th:text="${list.title}"></span></div>
+		<div class="regdate">날짜 : <span th:text="${list.regdate}"></span></div>
+		<div class="textArea"><pre th:text="${list.content}"></pre></div>
+	</div>
+
+	<div class="bottom_menu">
+		&nbsp;&nbsp;
+		<th:block th:if="${viewPrev != 0}">
+			<a th:href="@{'/board/view?seqno=' + ${viewPrev} + '&page=' + ${page} + 
+				'&searchType=' + ${searchType} + '&keyword=' + ${keyword}}">이전글 ▼</a> &nbsp;&nbsp;
+		</th:block>	
+		<a th:href="@{'/board/list?page=' + ${page} + 
+			'&searchType=' + ${searchType} + '&keyword=' + ${keyword}}">목록보기</a> &nbsp;&nbsp;
+		<th:block th:if="${viewNext != 0}">
+			<a th:href="@{'/board/view?seqno=' + ${viewNext} + '&page=' + ${page} + 
+				'&searchType=' + ${searchType} + '&keyword=' + ${keyword}}">다음글 ▲</a> &nbsp;&nbsp;
+		</th:block>	
+		<a href="/board/write">글 작성</a> &nbsp;&nbsp;
+		
+		<a th:href="@{'/board/modify?seqno=' + ${list.seqno} + '&page=' + ${page} +
+				'&searchType=' + ${searchType} + '&keyword=' + ${keyword}}">수정</a> &nbsp;&nbsp;
+		<a href="javascript:deleteBoard()">삭제</a> &nbsp;&nbsp;
+		
+	</div>
+
+
+</div>
+</body>
+</html>
