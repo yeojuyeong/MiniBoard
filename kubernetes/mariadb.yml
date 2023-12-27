@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
       - name: mariadb
-        image: docker.io/redleon1/mariadb_miniboard:{{VERSION}}
+        image: docker.io/redleon1/mariadb_smboard:{{VERSION}}
         imagePullPolicy: Always
         ports:
         - containerPort: 3306
