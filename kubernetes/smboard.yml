@@ -1,0 +1,37 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: smboard-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: smboard
+  template:
+    metadata:
+      name: smboard
+      labels:
+        app: smboard
+    spec:
+      containers:
+      - name: smboard
+        image: docker.io/redleon1/smboard_smboard:{{VERSION}}
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 8080
+      imagePullSecrets:
+      - name: miniboard-secret
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: smboard-service
+spec:
+  ports:
+  - port: 8080
+    targetPort: 8080
+    nodePort: 30002
+  selector:
+    app: smboard
+  type: NodePort
