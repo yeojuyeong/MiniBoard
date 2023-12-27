@@ -25,9 +25,9 @@ pipeline {
         }
         stage("Docker Image Build") {
            steps {
-               sh "docker build -t redleon1/apache2_smboard:${BUILD_NUMBER}" ./docker/apache2/"
-               sh "docker build -t redleon1/smboard_smboard:${BUILD_NUMBER}" ./docker/smboard/"
-               sh "docker build -t redleon1/mariadb_smboard:${BUILD_NUMBER}" ./docker/mariadb/"
+               sh "docker build -t redleon1/apache2_smboard:${BUILD_NUMBER} ./docker/apache2/"
+               sh "docker build -t redleon1/smboard_smboard:${BUILD_NUMBER} ./docker/smboard/"
+               sh "docker build -t redleon1/mariadb_smboard:${BUILD_NUMBER} ./docker/mariadb/"
            }
         }
         stage("Docker Image Push") {
