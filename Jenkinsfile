@@ -68,7 +68,7 @@ pipeline {
                     slackSend (
                         channel: "#it교육",
                         color: "#FF3232",
-                        message: "smboard 배포가 실패하였습니다.\n" +
+                        message: "smboard 배포가 실패하였습니다."
                     )
                     echo "Fail Server Deploy"
                 }
