@@ -44,6 +44,11 @@ pipeline {
                sh "docker image rm redleon1/mariadb_smboard:${BUILD_NUMBER}" 
            }
         }
+        stage("Minikube start") {
+           steps {
+               sh "minikube start --drivers=docker --cni=calico"
+           }
+        }
         stage("Deploy") {
            steps {
                sh "sed -i 's/{{VERSION}}/${BUILD_NUMBER}/g' ./kubernetes/apache2.yml"
