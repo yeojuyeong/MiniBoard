@@ -54,8 +54,7 @@ pipeline {
                sh "kubectl apply -f ./kubernetes/apache2.yml"
                sh "kubectl apply -f ./kubernetes/ingress.yml"
            } 
-        }
-        post {
+           post {
                 success {
                     slackSend (
                         channel: "#it교육",
@@ -72,6 +71,7 @@ pipeline {
                     )
                     echo "Fail Server Deploy"
                 }
-        }
+          }
+       }  
     }
 }
