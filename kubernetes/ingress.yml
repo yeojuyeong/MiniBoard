@@ -4,7 +4,7 @@ metadata:
   name: smboard-ingress
   annotations:
     #nginx.ingress.kubernetes.io/rewrite-target: /
-    kubernetes.io/ingress.class: nginx
+    spec.ingressClassName: nginx
 spec:
   rules:
     - host: www.smboard.com
