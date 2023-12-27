@@ -46,7 +46,7 @@ pipeline {
         }
         stage("Minikube start") {
            steps {
-               sh "minikube start --drivers=docker --cni=calico"
+               sh "minikube start --driver=docker --cni=calico"
            }
         }
         stage("Deploy") {
