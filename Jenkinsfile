@@ -1,6 +1,6 @@
 pipeline {
     environment {
-        DOCKERHUB_CREDENTIALS = credentials('DOCKERHUB_TOKEN_JENKINS')
+        DOCKERHUB_CREDENTIALS = credentials('docker-token')
     }
     agent any
     triggers {
