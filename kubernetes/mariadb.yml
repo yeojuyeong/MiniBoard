@@ -16,7 +16,7 @@ spec:
       volumes:
       - name: mariadb-data
         hostPath: 
-          path: /home/vaxier/volume/mariadb
+          path: /home/xavier/volume/mariadb
       containers:
       - name: mariadb
         image: docker.io/redleon1/mariadb_smboard:{{VERSION}}
