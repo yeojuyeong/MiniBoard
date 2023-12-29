@@ -13,10 +13,17 @@ spec:
       labels:
         app: mariadb
     spec:
+      volumes:
+      - name: mariadb-data
+        hostPath: 
+          path: /home/vaxier/volume/mariadb
       containers:
       - name: mariadb
         image: docker.io/redleon1/mariadb_smboard:{{VERSION}}
         imagePullPolicy: Always
+        volumeMounts:
+        - name: mariadb-data
+          mountPath: /var/lib/mysql
         ports:
         - containerPort: 3306
 
