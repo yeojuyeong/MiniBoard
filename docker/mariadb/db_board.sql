@@ -1,4 +1,4 @@
-create table tbl_board (
+create table if not exists tbl_board (
 
     seqno int not null auto_increment,
     writer varchar(50) not null,

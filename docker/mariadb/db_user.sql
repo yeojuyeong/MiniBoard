@@ -1,3 +1,3 @@
 use webdev;
-create user 'webmaster'@'%' identified by '12345';
+create user if not exists 'webmaster'@'%' identified by '12345';
 grant all privileges on *.* to 'webmaster'@'%';
